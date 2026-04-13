@@ -3,10 +3,11 @@ import 'dart:io';
 void main() {
   List<Map<String, dynamic>> studentList = [];
   String? userInput;
+  const String appTitle = "Student Grader v1.0";
   do {
     String menu = """
 
-===== Student Grader v1.0 =====
+===== $appTitle =====
 
 1. Add Student
 2. Record Score
