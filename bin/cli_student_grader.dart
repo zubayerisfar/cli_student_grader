@@ -150,7 +150,27 @@ Choose an option: """;
         }
         break;       
 
-          case '8':
+      // ======================== All Students Print ==========================      
+      case '5':
+        if (studentList.isEmpty) {
+          print("No students available.");
+        }
+        else{
+          print("STUDENT LIST:");
+          for (var student in studentList) {
+            var tags = [
+              student["name"],
+              "${student["scores"].length} scores",
+              if (student["bonus"] != null) "⭐ Has Bonus",
+            ];
+            print(tags.join(" | "));
+          }
+        }
+        break;
+      
+
+
+      case '8':
         print("Exiting Student Grader. Goodbye!");
         break;
   
