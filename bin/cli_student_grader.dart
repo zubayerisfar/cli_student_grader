@@ -4,6 +4,7 @@ void main() {
   List<Map<String, dynamic>> studentList = [];
   String? userInput;
   const String appTitle = "Student Grader v1.0";
+  // Keep showing the menu until user chooses Exit.
   do {
     String menu = """
 
@@ -28,6 +29,7 @@ Choose an option: """;
       case '1':
         print("Enter student name:");
         String? name = stdin.readLineSync();
+        // Re-prompt until we get a non-empty name.
         while (name == null || name.isEmpty) {
           print("Name cannot be empty. Please enter a valid name:");
           name = stdin.readLineSync();
@@ -57,6 +59,7 @@ Choose an option: """;
 
         String? choice = stdin.readLineSync();
         int? index = int.tryParse(choice ?? '');
+        // Validate selected student index.
         if (index == null || index < 1 || index > studentList.length) {
           print("Invalid index. Please select a valid student number.");
           break;
@@ -72,6 +75,7 @@ Choose an option: """;
         print("Enter score (0-100):");
         String? input = stdin.readLineSync();
         double? score = double.tryParse(input ?? '');
+        // Keep asking until score is numeric and inside range.
         while (score == null || score < 0 || score > 100) {
           print("Invalid score. Enter a number between 0 and 100:");
           input = stdin.readLineSync();
@@ -88,23 +92,22 @@ Choose an option: """;
         String? line = stdin.readLineSync();
 
         if (line != null) {
-          List<String> parts = line.split(',');
+          List<String> parts = line.split(',');// split input at , sign and store in list
 
           if (parts.length == 2) {
-            String name = parts[0].trim();
-            int? bonus = int.tryParse(parts[1].trim());
+            String name = parts[0].trim(); // trim removes leading and trailing whitespace
+            int? bonus = int.tryParse(parts[1].trim()); // better than parse
             if (bonus == null || bonus < 1 || bonus > 10) {
               print("Invalid bonus value. Enter a number between 1 and 10.");
               break;
             }
             int bonusValue = bonus;
-            int input = studentList.indexWhere(
-              (student) =>
+            int input = studentList.indexWhere( // find student index by name
+              (student) => // we apply condition here
                   student['name'].toString().toLowerCase() ==
                   name.toLowerCase(),
             );
             if (input != -1) {
-              // -1 mean end of loop and no match found
                 if (studentList[input]['bonus'] == null) {
                   studentList[input]["bonus"] ??= bonusValue;
                   print("Bonus points added for ${studentList[input]['name']}.");
@@ -158,8 +161,8 @@ Choose an option: """;
         }
         else{
           print("STUDENT LIST:");
-          for (var student in studentList) {
-            var tags = [
+          for (var student in studentList) { // for each loop
+            var tags = [ // as per instructors formatting requirement
               student["name"],
               "${student["scores"].length} scores",
               if (student["bonus"] != null) "⭐ Has Bonus",
@@ -188,9 +191,9 @@ Choose an option: """;
           choice = stdin.readLineSync();
           index = int.tryParse(choice ?? '');
         }
-
+        // dynamic stores any type of data, as we are storing maps, its best
         Map<String, dynamic> student = studentList[index - 1];
-        List<double> scores = List<double>.from(student['scores']);
+        List<double> scores = List<double>.from(student['scores']);// typecast to double list
 
         double total = 0;
         if (scores.isNotEmpty) {
@@ -198,6 +201,7 @@ Choose an option: """;
             total += score;
           }
         }
+        // Final average includes optional bonus and is capped at 100.
         double currAvg = scores.isEmpty ? 0 : total / scores.length;
         int bonus = student['bonus'] ?? 0;
         double finalAvg = currAvg + bonus;
@@ -228,6 +232,7 @@ Choose an option: """;
           _ => "Unknown grade.",
         };
 
+        // report card formatting requires advanced string function. i didnot add
         String reportCard = '''
 ╔═══════════════════════════════╗
 ║       REPORT CARD             ║
