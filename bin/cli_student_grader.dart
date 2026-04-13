@@ -243,7 +243,100 @@ Choose an option: """;
         print('Feedback: $feedback');
         break;
 
+      // ======================== Class Summary ==========================
+      case '7':
+        if (studentList.isEmpty) {
+          print("No students available.");
+          break;
+        }
 
+        int totalStudents = 0;
+
+        double classTotal = 0;
+        int passCount = 0;
+        double highestAvg = 0;
+        double lowestAvg = 101;
+        Set<String> uniqueGrades = {};
+
+        for (var student in studentList) {
+          List<double> scores = List<double>.from(student['scores']);
+          if (scores.isEmpty) {
+            continue;
+          }
+          // total marks calculation  
+          double sum = 0;
+          for (double score in scores) {
+            sum += score;
+          }
+          // student wise average marks calculation with bonus
+          double average = sum / scores.length;
+          average = average + (student['bonus'] ?? 0);
+          if (average > 100) {
+            average = 100;
+          }
+
+          // grade finder
+          String grade;
+          if (average >= 90) {
+            grade = 'A';
+          } 
+          else if (average >= 80) {
+            grade = 'B';
+          } 
+          else if (average >= 70) {
+            grade = 'C';
+          } 
+          else if (average >= 60) {
+            grade = 'D';
+          } 
+          else {
+            grade = 'F';
+          }
+
+          classTotal += average;
+          totalStudents++;
+
+          if (average > highestAvg) {
+            highestAvg = average;
+          }
+          if (average < lowestAvg) {
+            lowestAvg = average;
+          }
+
+          if (scores.isNotEmpty && average >= 60) {
+            passCount++;
+          }
+
+          uniqueGrades.add(grade);
+        }
+
+        if (totalStudents == 0) {
+          print("No student has scores yet.");
+          break;
+        }
+
+        // class wise average
+        double classAverage = classTotal / totalStudents;
+
+        // generate summary lines
+        var summaryLines = [
+          for (var s in studentList)
+            "${s['name']}: ${s['scores'].length} scores",
+        ];
+
+        print("===== CLASS SUMMARY =====");
+        print("Total students: ${studentList.length}");
+        print("Students with scores: $totalStudents");
+        print("Passing students: $passCount");
+        print("Class average: ${classAverage.toStringAsFixed(2)}");
+        print("Highest average: ${highestAvg.toStringAsFixed(2)}");
+        print("Lowest average: ${lowestAvg.toStringAsFixed(2)}");
+        print("Unique grades: $uniqueGrades");
+        print("====== INDIVIDUAL STUDENT SUMMARY ======");
+        for (var line in summaryLines) {
+          print(line);
+        }
+        break;
 
       case '8':
         print("Exiting Student Grader. Goodbye!");
