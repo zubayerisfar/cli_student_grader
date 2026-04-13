@@ -168,6 +168,81 @@ Choose an option: """;
         }
         break;
       
+      // ======================== View Report Card ==========================      
+      case '6':
+        if (studentList.isEmpty) {
+          print("No students available. Please add a student first.");
+          break;
+        }
+
+        print("Pick a student to view report card:");
+        for (int i = 0; i < studentList.length; i++) {
+          print("${i + 1}. ${studentList[i]['name']}");
+        }
+
+        String? choice = stdin.readLineSync();
+        int? index = int.tryParse(choice ?? '');
+        while (index == null || index < 1 || index > studentList.length) {
+          print("Invalid index. Please select a valid student number.");
+          choice = stdin.readLineSync();
+          index = int.tryParse(choice ?? '');
+        }
+
+        Map<String, dynamic> student = studentList[index - 1];
+        List<double> scores = List<double>.from(student['scores']);
+
+        double total = 0;
+        if (scores.isNotEmpty) {
+          for (double score in scores) {
+            total += score;
+          }
+        }
+        double currAvg = scores.isEmpty ? 0 : total / scores.length;
+        int bonus = student['bonus'] ?? 0;
+        double finalAvg = currAvg + bonus;
+        if (finalAvg > 100) {
+          finalAvg = 100;
+        }
+        String grade;
+        if (finalAvg >= 90) {
+          grade = 'A';
+        } else if (finalAvg >= 80) {
+          grade = 'B';
+        } else if (finalAvg >= 70) {
+          grade = 'C';
+        } else if (finalAvg >= 60) {
+          grade = 'D';
+        } else {
+          grade = 'F';
+        }
+        String displayComment =
+            student['comment']?.toString().toUpperCase() ?? "No comment provided";
+
+        String feedback = switch (grade) {
+          "A" => "Outstanding performance!",
+          "B" => "Good work, keep it up!",
+          "C" => "Satisfactory. Room to improve.",
+          "D" => "Needs improvement.",
+          "F" => "Failing. Please seek help.",
+          _ => "Unknown grade.",
+        };
+
+        String reportCard = '''
+╔═══════════════════════════════╗
+║       REPORT CARD             ║
+╠═══════════════════════════════╣
+║  Name:    ${student['name']}              ║
+║  Scores:  $scores             ║
+║  Bonus:   +$bonus                 ║
+║  Average: ${finalAvg.toStringAsFixed(1)}                ║
+║  Grade:   $grade                   ║
+║  Comment: $displayComment  ║
+╚══════════════════════════════╝
+      ''';
+        print(reportCard);
+        print('Feedback: $feedback');
+        break;
+
 
 
       case '8':
