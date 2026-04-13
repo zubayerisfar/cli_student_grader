@@ -117,7 +117,40 @@ Choose an option: """;
         }
         break;
 
-      case '8':
+      // ======================== Comment Add ==========================      
+      case '4':
+        print("Enter name of the student and comment:");
+        print("Enter input like: Rakib,Excellent work!");
+        String? line = stdin.readLineSync();
+
+        if (line != null) {
+          List<String> parts = line.split(',');
+
+          if (parts.length == 2) {
+            String name = parts[0].trim();
+            String comment = parts[1].trim();
+
+            int input = studentList.indexWhere(
+              (student) =>
+                  student['name'].toString().toLowerCase() ==
+                  name.toLowerCase(),
+            );
+            if (input != -1) {
+              // -1 mean end of loop and no match found
+                if (studentList[input]['comment'] == null) {
+                  studentList[input]["comment"] ??= comment;
+                  print("Comment added for ${studentList[input]['name']}.");
+                } else {
+                  print("Comment already set for ${studentList[input]['name']}.");
+                }
+            } else {
+              print("Student not found.");
+            }
+          }
+        }
+        break;       
+
+          case '8':
         print("Exiting Student Grader. Goodbye!");
         break;
   
