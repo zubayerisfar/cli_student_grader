@@ -223,14 +223,20 @@ Choose an option: """;
         String displayComment =
             student['comment']?.toString().toUpperCase() ?? "No comment provided";
 
-        String feedback = switch (grade) {
-          "A" => "Outstanding performance!",
-          "B" => "Good work, keep it up!",
-          "C" => "Satisfactory. Room to improve.",
-          "D" => "Needs improvement.",
-          "F" => "Failing. Please seek help.",
-          _ => "Unknown grade.",
-        };
+        String feedback;
+        if (grade == "A") {
+          feedback = "Outstanding performance!";
+        } else if (grade == "B") {
+          feedback = "Good work, keep it up!";
+        } else if (grade == "C") {
+          feedback = "Satisfactory. Room to improve.";
+        } else if (grade == "D") {
+          feedback = "Needs improvement.";
+        } else if (grade == "F") {
+          feedback = "Failing. Please seek help.";
+        } else {
+          feedback = "Unknown grade.";
+        }
 
         // report card formatting requires advanced string function. i didnot add
         String reportCard = '''
